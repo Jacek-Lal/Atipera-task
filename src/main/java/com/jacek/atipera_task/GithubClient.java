@@ -30,10 +30,12 @@ final class GithubClient {
     }
 
     List<GithubBranch> getRepoBranches(String username, String repoName){
-        return restClient.get()
+        List<GithubBranch> response = restClient.get()
                 .uri("/repos/{username}/{repoName}/branches", username, repoName)
                 .retrieve()
                 .body(new ParameterizedTypeReference<List<GithubBranch>>(){});
+
+        return response != null ? response : List.of();
     }
 
     record GithubRepo(String name, Owner owner, boolean fork){
