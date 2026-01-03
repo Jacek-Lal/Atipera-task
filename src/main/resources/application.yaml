@@ -1,3 +1,7 @@
 spring:
   application:
     name: atipera-task
+
+github:
+  api:
+    base-url: https://api.github.com
