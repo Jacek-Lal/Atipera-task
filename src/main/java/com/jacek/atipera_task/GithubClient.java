@@ -23,7 +23,18 @@ final class GithubClient {
                 .body(new ParameterizedTypeReference<List<GithubRepo>>(){});
     }
 
+    List<GithubBranch> getRepoBranches(String username, String repoName){
+        return restClient.get()
+                .uri("/repos/{username}/{repoName}/branches", username, repoName)
+                .retrieve()
+                .body(new ParameterizedTypeReference<List<GithubBranch>>(){});
+    }
+
     record GithubRepo(String name, Owner owner, boolean fork){
         record Owner(String login){}
+    }
+
+    record GithubBranch(String name, Commit commit){
+        record Commit(String sha){}
     }
 }
