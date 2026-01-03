@@ -3,6 +3,7 @@ package com.jacek.atipera_task;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
 import java.util.List;
@@ -17,10 +18,16 @@ final class GithubClient {
     }
 
     List<GithubRepo> getUserRepos(String username){
-        return restClient.get()
-                .uri("/users/{username}/repos", username)
-                .retrieve()
-                .body(new ParameterizedTypeReference<List<GithubRepo>>(){});
+        try {
+            List<GithubRepo> response = restClient.get()
+                    .uri("/users/{username}/repos", username)
+                    .retrieve()
+                    .body(new ParameterizedTypeReference<List<GithubRepo>>(){});
+
+            return response != null ? response : List.of();
+        } catch (HttpClientErrorException.NotFound e){
+            throw new UserNotFoundException(username, e);
+        }
     }
 
     List<GithubBranch> getRepoBranches(String username, String repoName){
