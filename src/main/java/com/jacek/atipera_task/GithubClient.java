@@ -1,6 +1,5 @@
 package com.jacek.atipera_task;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
@@ -13,8 +12,8 @@ final class GithubClient {
 
     private final RestClient restClient;
 
-    GithubClient (RestClient.Builder builder, @Value("${github.api.base-url}") String baseUrl){
-        this.restClient = builder.baseUrl(baseUrl).build();
+    GithubClient (RestClient githubRestClient){
+        this.restClient = githubRestClient;
     }
 
     List<GithubRepo> getUserRepos(String username){
