@@ -16,7 +16,7 @@ final class GithubRepoController {
         this.githubRepoService = githubRepoService;
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/users/{username}/repos")
     public ResponseEntity<List<RepoResponse>> getAllUserRepos(@PathVariable String username){
         return ResponseEntity.ok().body(githubRepoService.getUserRepos(username));
     }
